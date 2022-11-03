@@ -1,0 +1,77 @@
+Python Testing (pytest) Notes 
+
+Introduction
+
+Why use pytest? 
+    - simple tests to write
+    - complex tests are still simple to write 
+    - tests are easy to read/understand 
+    - assert tests are used for verifcations
+    - can use pytest to run tests written for unit and nose 
+    - can use the same version of pytest on multiple versions of python (because they are installed seperately)
+
+
+Chapter 1. Getting started with pytest
+def test_passing():
+    assert (1,2,3) == (1,2,3)
+
+- pytest will find function 'test_passing()' because it looks for 'test_' prefix in files, and then again within test files to run tests 
+    - this process is call 'test discovery'
+    - pytest is find any test we want it to run
+    - pytest has naming conventions ie. "test_" prefix
+
+- builtin keyword 'assert' determines if the test fails or passes 
+- using flag '-v' for verbose information 
+
+
+- ran passing test 'pytest test_ch1.py'
+results: 
+collected 1 item                                                                                                             
+test_ch1.py .         [100%]
+==== 1 passed in 0.01s =====
+# the period after test_chapter.py means only one test was ran 
+
+
+- This is a failing test:
+chapter_1/test_two.py
+
+def test_failing():
+assert (1, 2, 3) == (3, 2, 1)
+- Result: msg 'index 0 is a mismatch 1 != 3'
+    - the extra section demonstrating where the test fails is called a traceback
+
+
+Flags 
+- flag '--tb=no' is used to turn off tracebacks
+
+- can run sets of tests to run by listing directory file names 
+    EX: 'pytest --tb=no test_one.py test_two.py'
+
+_ can also run all tests in a directory   
+    EX: 'pytest --tb=no chapter_1'
+
+- run a specific test function within test file
+    EX: 'pytest -v chapter_1/test_one.py::test_passing'
+
+
+
+- run pytest in several different ways
+    -> pytest<filename>: runs tests in that file 
+    -> pytest<filename><filename>: runs test in multiple files
+    -> pytest<dirname>: recursively searches for tests within directory (or more than one)
+
+
+- Naming conventions to keep your test code discoverable by pytest:
+Test files - test_<something>.py or <something>_test.py.
+Test methods and functions - test_<something>.
+Test classes - Test<Something>.
+*there are ways to change the discovery rules for tests that are named differently (Ch. 8 topic)
+
+
+Test outcomes possible
+PASSED (.) test ran successfully
+FAILED (F) test unsuccessful
+SKIPPED (s) test skipped (using decorators) - @pytest.mark.skip() or @pytest.mark.skipif()
+XFAIL (x) test is meant to fail purposefully - @pytest.mark.xfail()
+XPASS (X) test marked with xfail decorator, but it ran and passed 
+ERROR (E) an exception error raised during the execution of a fixture or hook function, NOT during execution of the test function
