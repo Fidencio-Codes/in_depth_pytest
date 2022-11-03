@@ -3,10 +3,10 @@ Notes from book:
 "Python Testing with pytest: Simple, Rapid, Effective, and Scalable, 2nd Edition" by Brian Okken
 
 Pytest is a command line tool; a testing framework that can find written tests, run those tests, and report the results. 
-    - Can be extended by writing custom plugins and installing 3rd party plugins.
+- Can be extended by writing custom plugins and installing 3rd party plugins.
 
 To practice these exercises, a sample application will be used called 'Cards.'
-    - Cards is meant to model the components of a modern application (API, TinyDB)
+- Cards is meant to model the components of a modern application (API, TinyDB)
 
 
 Ch 1 Review 
