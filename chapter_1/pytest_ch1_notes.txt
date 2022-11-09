@@ -44,7 +44,7 @@ assert (1, 2, 3) == (3, 2, 1)
 Flags 
 - flag '--tb=no' is used to turn off tracebacks
 
-- can run sets of tests to run by listing directory file names 
+- can run sets of tests by listing directory file names 
     EX: 'pytest --tb=no test_one.py test_two.py'
 
 _ can also run all tests in a directory   
@@ -52,7 +52,6 @@ _ can also run all tests in a directory
 
 - run a specific test function within test file
     EX: 'pytest -v chapter_1/test_one.py::test_passing'
-
 
 
 - run pytest in several different ways
