@@ -1,0 +1,105 @@
+Chapter 2 Writing Test Functions
+    how to organize tests into classes, modules, and directories
+
+Installed Cards project - application code, three layers - CLI, API, DB 
+CLI - user interactions, cli calls API
+API - logic for application, api calls into the DB layer
+DB - saving and retrieving application data 
+
+Folder: cards_proj/src/cards/api.py
+- hosts data structure used to pass information between CLI and API
+- data set called Card, class
+
+Cards application structure
+- three string fields: summary, owner, and started
+- one integer field: id
+
+- summary, id and owner default to None 
+- state field defaults to "todo"
+
+- id uses field method to utilize "compare=False", this allows id field to be left out of the comparisons between two cards.
+
+It is helpful to write tests on new data structures, to understand how the data structure operates
+
+
+Assert statements 
+        Pytest vs Unittest
+- pytest                  unittest
+  assert something        assertTrue(something)
+  assert not something    assertFalse(something)
+  assert a == b           assertEqual(a, b)
+  assert a != b           assertNotEqual(a, b)
+  assert a is None        assertIsNone(a)
+  assert a is not None    assertIsNotNone(a)
+  assert a <= b           assertLessEqual(a, b)
+
+- Assert statements is the primary tool to communicate test failures
+    assert <expression>
+
+- pytest feature: assert rewriting - intercepts assert calls and replaces them with assert failure details
+- various kinds of assert statements can be found on pytest.org website
+
+Failing with pytest.fail()
+- assertion helper functions
+    used to wrap up a complicated assertion check 
+    test_helper.py file
+    "assertion_identical" function sets "__tracebackhide__=True" *optional setting*  
+        - failing test will not be included in the trace back
+    
+Testing for expected exceptions
+- use pytest.raises() to test expected exceptions.
+    test_experiment.py file
+    cards API has a CardsDB class that requires a path argument
+        - if we do not pass the path argument
+        - then error occurs when trying to initialize CardsDB type
+        - "TypeError: __init__() missing 1 required positional argument: 'db_path'"
+
+    def test_no_path_raises():
+        - uses "with pytest.raises(TypeError):" - whatever is in the next block of code should raise a TypeError exception
+        - if no exception is raised or another kind of error, then the pytest fails 
+
+Arrange-Act-Assert pattern (format to keep in mind when creating test)
+- aka Given-When-Then pattern 
+    test_structure.py file 
+
+    Given/Arrange - where you set up your data/environment 
+    When/Act - action is performed focusing on test functions 
+    Then/Assert - action result is expected behavior
+
+Grouping test with classes 
+so far we have been writing test functions within modules in a file system directory 
+pytest allows grouping tests with classes 
+    test_classes.py file 
+    pytest -v test_classes.py::TestEquality::test_equality
+
+    used test classes to run a subset of tests
+    running a small batch of test is handy while debugging code and in instances when you want to limit test to a specific section of code 
+
+run subsets of tests in several ways:
+    Subset                          Syntax                                                  Example
+Single test method              pytest path/test_module.py::TestClass::test_method       
+All tests in a class            pytest path/test_module.py::TestClass                   pytest ch2/test_classes.py::TestEquality
+Single test function            pytest path/test_module.py::test_function               
+All tests in a module           pytest path/test_module.py
+All tests in a directory        pytest path
+Tests matching a name pattern   pytest -k pattern
+Tests by marker                 {covered in ch 6}
+
+Familiar with all, but pattern and marker subsets, so far. 
+-k flag takes an expression then tells pytest to run tests that contain a substring that matches the expression 
+    use -k flag to specify test class names 
+        pytest -v -k TestEquality
+
+    Class name does not need to even be fully written out
+        pytest -v -k TestEq 
+
+    Run all tests with "equality" as part of their name
+        pytest -v --tb=no -k equality
+
+    the last test has a fail example, to eliminate it run:
+        pytest -v --tb=no -k "equality and not equality_fail"
+
+    able to use keywords and, not, or and parenthesis to create complex expressions 
+    EX: pytest -v --tb=no -k "(dict or ids) and not TestEquality"
+
+pytest --help for man pages 

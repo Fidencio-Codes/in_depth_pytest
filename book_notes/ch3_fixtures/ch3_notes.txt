@@ -1,0 +1,112 @@
+Ch3 pytest Fixtures 
+
+pytest helper functions called Fixtures, used for structuring and cleaning test code  
+- Fixtures can be ran before and after tests 
+- Use them for any function needed such as:
+    get a data set for test to work on 
+    get system into known state before running tests 
+    grabbing data for multiple tests 
+
+- test_fixtures.py example
+    decorators are used to declare fixtures 
+    'pytest.fixture()' is used to decorate the 'some_data()' function 
+    including a fixture name in the parameter list lets pytest know to run it before the test 
+    pytest uses decorators to add functionality and features to other functions 
+    'test_some_data()' has the same name as the fixture and 'some_data' as the parameter
+
+- pytest treats exceptions differently when using fixtures 
+    an exception error or pytest.fail() normally occurs as a 'Fail' results when using NO fixtures 
+    during a fixture, test functions are reported as "Error"
+    if test results in "Fail" then issue resides in the test function 
+    if test results in "Error" issue resides in fixture 
+    important for debugging
+
+- pytest fixtures is a unique core feature that makes pytest a popular test framework over others 
+
+
+Using Fixtures for Setup and Teardown
+- API testing for Cards application
+    test_count.py
+    test_count_initial
+
+- fixtures and test functions are separate functions and should have differing names 
+
+
+Tracing Fixture Execution with '-setup-show'
+- what order is everything being called? now that we can run multiple tests 
+- flag --setup-show will display the order of operations of tests and fixtures, including setup and teardown phases
+    pytest --setup-show test_count.py example
+    F in front of the fixture name indicates that the fixture is using function scope 
+        - meaning fixture is called before each test function that uses it and torn down after each function uses
+
+Specifying Scope 
+- each fixture has a specific scope to them that defines when the setup and teardown take place 
+- scope indicates how often setup/teardown is used by multiple test functions 
+    default scope is the 'function' scope, set up will run before each test that needs it 
+    teardown portion runs after each test that used it 
+
+- let's say you do not want function scope on your tests
+    EX: let's say setting and connecting to the database takes too long, or is a large data set and you do not want it to run multiple times 
+        - simulate slow resource with time.sleep(1) statement 
+
+    change scope of fixture so the database is only opened once 
+    added 'scope="module" ' to fixture parameter 
+    changing module scope allows any test that uses cards_db fixture to share the same instance of it
+        - able to use setup/teardown of this instance for all tests 
+
+- fixture decorator scope parameter allows other scope parameters
+    class, package, and session scope parameters (learned: function and modules)
+
+scope='function'
+Run once per test function. The setups run before each test. The teardowns run after each test.
+This is the default scope
+
+scope='class'
+Run once per test class, regardless of how many test methods are in the class.
+
+scope='module'
+Run once per module, regardless of how many test functions or methods
+or other fixtures in the module use it.
+
+scope='package'
+Run once per package, or test directory, regardless of how many test
+functions or methods or other fixtures in the package use it.
+
+scope='session'
+Run once per session. All test methods and functions using a fixture of
+session scope share one setup and teardown call.
+
+- test functions that use fixtures do not control how often a fixture is set up and torn down 
+- when fixture is defined within a test module, the session and package scopes act like module scope
+    in order to distinguish and make use of session/package scopes we need to add them in a conftest.py file 
+
+
+Sharing Fixtures through conftest.py 
+- across multiple tests
+- conftest.py file needs to be in the same directory as the test files using it OR in a parent file
+- conftest.py file is optional to include, considered a local plugin for pytest
+    can contain hook functions and fixtures
+
+- conftest.py file example 
+    
+
+
+Finding Where Fixtures are Defined 
+
+
+Multiple Fixture Levels 
+
+
+Multiple Fixtures per Test or Fixture
+
+
+Deciding Fixture Scope Dynamically 
+
+
+Using autouse for recurring Fixtures 
+
+
+Renaming Fixtures
+
+
+

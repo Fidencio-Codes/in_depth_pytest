@@ -12,7 +12,7 @@ def test_some_data(some_data):
     assert some_data == 42
 
 
-
+# pytest.fixture() decorator used to declare fixtures 
 
 @pytest.fixture()
 def some_other_data():
@@ -25,7 +25,6 @@ def some_other_data():
 def test_other_data(some_other_data):
     """Try to use failing fixture."""
     assert some_other_data == 42
-
 
 
 

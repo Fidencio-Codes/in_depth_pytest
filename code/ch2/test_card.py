@@ -1,21 +1,4 @@
-from dataclasses import asdict
-from dataclasses import dataclass
-from dataclasses import field
-
-
-@dataclass
-class Card:
-    summary: str = None
-    owner: str = None
-    state: str = "todo"
-    id: int = field(default=None, compare=False)
-
-    @classmethod
-    def from_dict(cls, d):
-        return Card(**d)
-
-    def to_dict(self):
-        return asdict(self)
+from cards import Card
 
 
 def test_field_access():
@@ -44,8 +27,6 @@ def test_equality_with_diff_ids():
     c1 = Card("something", "brian", "todo", 123)
     c2 = Card("something", "brian", "todo", 4567)
     assert c1 == c2
-
-
 def test_inequality():
     c1 = Card("something", "brian", "todo", 123)
     c2 = Card("completely different", "okken", "done", 123)
